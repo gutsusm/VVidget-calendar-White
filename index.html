@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,600,700');
+
+/* =========================================================
+   НАСТРОЙКИ КАЛЕНДАРЯ
+   ========================================================= */
+
+:root {
+    /* ОСНОВНОЙ ФОН */
+    --calendar-bg-color: #FFFFFF;
+
+    /* Цвет текста */
+    --calendar-font-color: #191919;
+
+    /* Разделитель дней недели */
+    --weekdays-border-bottom-color: #333333;
+
+    /* Наведение на дату */
+    --calendar-date-hover-color: #3A3A3A;
+
+    /* Фон кнопки Today */
+    --calendar-current-date-color: #242424;
+
+    /* Цвет сегодняшнего дня */
+    --calendar-today-color: #2196F3;
+
+    /* Обводка сегодняшнего дня */
+    --calendar-today-innerborder-color: #000000;
+
+    /* Фон стрелок */
+    --calendar-nextprev-bg-color: #242424;
+
+    /*
+       ГЛАВНАЯ НАСТРОЙКА РАЗМЕРА
+
+       Меняй только это значение:
+
+       280px = маленький
+       320px = компактный
+       360px = средний
+       400px = большой
+       100%  = на всю ширину Notion
+    */
+    --calendar-width: 100%;
+}
+
+
+/* =========================================================
+   ОСНОВА
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--calendar-font-color);
+}
+
+
+/* =========================================================
+   КАЛЕНДАРЬ
+   ========================================================= */
+
+.calendar {
+    width: var(--calendar-width);
+    max-width: 100%;
+    min-width: 0;
+
+    margin: 0 auto;
+
+    background: var(--calendar-bg-color);
+    color: var(--calendar-font-color);
+
+    overflow: hidden;
+
+    font-weight: normal;
+}
+
+
+/* Внутренняя часть */
+
+.calendar-inner {
+    width: 100%;
+    padding: 10px;
+}
+
+
+/* =========================================================
+   ВЕРХНЯЯ ПАНЕЛЬ
+   ========================================================= */
+
+.calendar .calendar-inner .calendar-controls {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+/* Месяц + год */
+
+.calendar .calendar-inner .calendar-controls .calendar-year-month {
+    display: flex;
+
+    min-width: 0;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+
+.calendar .calendar-inner .calendar-controls
+.calendar-year-month .calendar-year-label,
+.calendar .calendar-inner .calendar-controls
+.calendar-year-month .calendar-month-label {
+
+    font-weight: 700;
+
+    font-size: clamp(15px, 5vw, 20px);
+}
+
+
+/* Стрелки */
+
+.calendar .calendar-inner .calendar-controls .calendar-prev {
+    text-align: left;
+}
+
+.calendar .calendar-inner .calendar-controls .calendar-next {
+    text-align: right;
+}
+
+
+.calendar .calendar-inner .calendar-controls
+.calendar-next a,
+.calendar .calendar-inner .calendar-controls
+.calendar-prev a {
+
+    font-family: consolas, sans-serif;
+
+    font-size: clamp(18px, 6vw, 26px);
+
+    text-decoration: none;
+
+    padding: 3px 8px;
+
+    display: inline-block;
+
+    background: var(--calendar-nextprev-bg-color);
+
+    border-radius: 6px;
+
+    color: var(--calendar-font-color);
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+.calendar .calendar-inner .calendar-today-date {
+
+    display: block;
+
+    width: 100%;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    margin: 8px 0;
+
+    background: var(--calendar-current-date-color);
+
+    padding: 7px 4px;
+
+    border-radius: 5px;
+
+    font-size: clamp(11px, 3.5vw, 14px);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ДНИ НЕДЕЛИ И ДАТЫ
+   ========================================================= */
+
+.calendar .calendar-inner .calendar-body {
+
+    display: grid;
+
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    width: 100%;
+
+    text-align: center;
+}
+
+
+/* Каждая ячейка */
+
+.calendar .calendar-inner .calendar-body div {
+
+    min-width: 0;
+
+    min-height: clamp(28px, 8vw, 42px);
+
+    padding: 2px;
+
+    margin: 3px 1px;
+
+    border: 1px solid transparent;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    line-height: 1;
+
+    border-radius: 5px;
+
+    font-size: clamp(11px, 3.5vw, 15px);
+}
+
+
+/* Названия дней недели */
+
+.calendar .calendar-inner .calendar-body
+div:nth-child(-n+7) {
+
+    border: 1px solid transparent;
+
+    border-bottom:
+        1px solid
+        var(--weekdays-border-bottom-color);
+
+    border-radius: 0;
+
+    min-height: clamp(24px, 6vw, 32px);
+
+    margin-top: 0;
+
+    margin-bottom: 3px;
+
+    font-size: clamp(9px, 3vw, 13px);
+}
+
+
+/* Hover */
+
+.calendar .calendar-inner .calendar-body
+div:hover {
+
+    border:
+        1px solid
+        var(--calendar-date-hover-color);
+}
+
+
+.calendar .calendar-inner .calendar-body
+div:nth-child(-n+7):hover {
+
+    border: 1px solid transparent;
+
+    border-bottom:
+        1px solid
+        var(--weekdays-border-bottom-color);
+}
+
+
+.calendar .calendar-inner .calendar-body
+div.empty-dates:hover {
+
+    border: 1px solid transparent;
+}
+
+
+/* Ссылки с датами */
+
+.calendar .calendar-inner .calendar-body div > a {
+
+    width: 100%;
+    height: 100%;
+
+    color: var(--calendar-font-color);
+
+    text-decoration: none;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================================================
+   СЕГОДНЯШНЯЯ ДАТА
+   ========================================================= */
+
+.calendar .calendar-inner .calendar-body
+.calendar-today {
+
+    background: var(--calendar-today-color);
+}
+
+
+.calendar .calendar-inner .calendar-body
+.calendar-today:hover {
+
+    border: 1px solid transparent;
+}
+
+
+.calendar .calendar-inner .calendar-body
+.calendar-today a {
+
+    outline:
+        2px solid
+        var(--calendar-today-innerborder-color);
+
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   МАЛЕНЬКИЕ ЭКРАНЫ
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+    .calendar-inner {
+        padding: 7px;
+    }
+
+    .calendar .calendar-inner .calendar-controls {
+        grid-template-columns: 32px 1fr 32px;
+    }
+
+    .calendar .calendar-inner .calendar-body div {
+        margin: 2px 0;
+    }
+
+}
+
+
+/* =========================================================
+   БОЛЬШИЕ ЭКРАНЫ
+   ========================================================= */
+
+@media (min-width: 600px) {
+
+    .calendar {
+        max-width: 400px;
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="calendar"></div>
+
+
+<script>
+
+/* =========================================================
+   КАЛЕНДАРЬ
+   ========================================================= */
+
+function CalendarControl() {
+
+    const calendar = new Date();
+
+    const calendarControl = {
+
+        localDate: new Date(),
+
+        calWeekDays: [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat"
+        ],
+
+        calMonthName: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        ],
+
+
+        /* Количество дней */
+
+        daysInMonth: function(month, year) {
+
+            return new Date(
+                year,
+                month,
+                0
+            ).getDate();
+
+        },
+
+
+        /* Первый день месяца */
+
+        firstDay: function() {
+
+            return new Date(
+                calendar.getFullYear(),
+                calendar.getMonth(),
+                1
+            );
+
+        },
+
+
+        /* Последний день месяца */
+
+        lastDay: function() {
+
+            return new Date(
+                calendar.getFullYear(),
+                calendar.getMonth() + 1,
+                0
+            );
+
+        },
+
+
+        /* Номер первого дня */
+
+        firstDayNumber: function() {
+
+            return calendarControl
+                .firstDay()
+                .getDay() + 1;
+
+        },
+
+
+        /* Предыдущий месяц */
+
+        navigateToPreviousMonth: function() {
+
+            calendar.setMonth(
+                calendar.getMonth() - 1
+            );
+
+            calendarControl.attachEventsOnNextPrev();
+
+        },
+
+
+        /* Следующий месяц */
+
+        navigateToNextMonth: function() {
+
+            calendar.setMonth(
+                calendar.getMonth() + 1
+            );
+
+            calendarControl.attachEventsOnNextPrev();
+
+        },
+
+
+        /* Вернуться на текущий месяц */
+
+        navigateToCurrentMonth: function() {
+
+            const currentMonth =
+                calendarControl.localDate.getMonth();
+
+            const currentYear =
+                calendarControl.localDate.getFullYear();
+
+            calendar.setMonth(currentMonth);
+
+            calendar.setFullYear(currentYear);
+
+            calendarControl.attachEventsOnNextPrev();
+
+        },
+
+
+        /* Показать год */
+
+        displayYear: function() {
+
+            const yearLabel =
+                document.querySelector(
+                    ".calendar .calendar-year-label"
+                );
+
+            yearLabel.innerHTML =
+                calendar.getFullYear();
+
+        },
+
+
+        /* Показать месяц */
+
+        displayMonth: function() {
+
+            const monthLabel =
+                document.querySelector(
+                    ".calendar .calendar-month-label"
+                );
+
+            monthLabel.innerHTML =
+                calendarControl.calMonthName[
+                    calendar.getMonth()
+                ];
+
+        },
+
+
+        /* Нажатие на дату */
+
+        selectDate: function(e) {
+
+            console.log(
+                `${e.target.textContent} ${
+                    calendarControl.calMonthName[
+                        calendar.getMonth()
+                    ]
+                } ${
+                    calendar.getFullYear()
+                }`
+            );
+
+        },
+
+
+        /* Создание HTML */
+
+        plotSelectors: function() {
+
+            document.querySelector(
+                ".calendar"
+            ).innerHTML = `
+
+                <div class="calendar-inner">
+
+                    <div class="calendar-controls">
+
+                        <div class="calendar-prev">
+                            <a href="#">&lt;</a>
+                        </div>
+
+                        <div class="calendar-year-month">
+
+                            <div class="calendar-month-label"></div>
+
+                            <div>-</div>
+
+                            <div class="calendar-year-label"></div>
+
+                        </div>
+
+                        <div class="calendar-next">
+                            <a href="#">&gt;</a>
+                        </div>
+
+                    </div>
+
+
+                    <div class="calendar-today-date">
+
+                        Today:
+                        ${calendarControl.calWeekDays[
+                            calendarControl.localDate.getDay()
+                        ]},
+
+                        ${calendarControl.localDate.getDate()}
+
+                        ${calendarControl.calMonthName[
+                            calendarControl.localDate.getMonth()
+                        ]}
+
+                        ${calendarControl.localDate.getFullYear()}
+
+                    </div>
+
+
+                    <div class="calendar-body"></div>
+
+                </div>
+            `;
+
+        },
+
+
+        /* Дни недели */
+
+        plotDayNames: function() {
+
+            for (
+                let i = 0;
+                i < calendarControl.calWeekDays.length;
+                i++
+            ) {
+
+                document.querySelector(
+                    ".calendar .calendar-body"
+                ).innerHTML += `
+
+                    <div>
+                        ${calendarControl.calWeekDays[i]}
+                    </div>
+
+                `;
+
+            }
+
+        },
+
+
+        /* Даты */
+
+        plotDates: function() {
+
+            const calendarBody =
+                document.querySelector(
+                    ".calendar .calendar-body"
+                );
+
+            calendarBody.innerHTML = "";
+
+            calendarControl.plotDayNames();
+
+            calendarControl.displayMonth();
+
+            calendarControl.displayYear();
+
+
+            const year =
+                calendar.getFullYear();
+
+            const month =
+                calendar.getMonth();
+
+
+            /* Первый день */
+
+            const firstDay =
+                new Date(
+                    year,
+                    month,
+                    1
+                ).getDay();
+
+
+            /* Количество дней */
+
+            const daysInCurrentMonth =
+                new Date(
+                    year,
+                    month + 1,
+                    0
+                ).getDate();
+
+
+            /* Пустые ячейки перед первым днем */
+
+            for (
+                let i = 0;
+                i < firstDay;
+                i++
+            ) {
+
+                calendarBody.innerHTML +=
+                    `<div class="empty-dates"></div>`;
+
+            }
+
+
+            /* Дни текущего месяца */
+
+            for (
+                let day = 1;
+                day <= daysInCurrentMonth;
+                day++
+            ) {
+
+                const isToday =
+                    year ===
+                    calendarControl.localDate.getFullYear()
+
+                    &&
+
+                    month ===
+                    calendarControl.localDate.getMonth()
+
+                    &&
+
+                    day ===
+                    calendarControl.localDate.getDate();
+
+
+                if (isToday) {
+
+                    calendarBody.innerHTML += `
+
+                        <div class="calendar-today">
+
+                            <a
+                                class="dateNumber"
+                                href="#"
+                            >
+                                ${day}
+                            </a>
+
+                        </div>
+
+                    `;
+
+                } else {
+
+                    calendarBody.innerHTML += `
+
+                        <div>
+
+                            <a
+                                class="dateNumber"
+                                href="#"
+                            >
+                                ${day}
+                            </a>
+
+                        </div>
+
+                    `;
+
+                }
+
+            }
+
+
+            /* Заполняем последнюю строку */
+
+            const totalCells =
+                firstDay +
+                daysInCurrentMonth;
+
+
+            const remainingCells =
+                (7 - (totalCells % 7)) % 7;
+
+
+            for (
+                let i = 0;
+                i < remainingCells;
+                i++
+            ) {
+
+                calendarBody.innerHTML +=
+                    `<div class="empty-dates"></div>`;
+
+            }
+
+        },
+
+
+        /* События */
+
+        attachEvents: function() {
+
+            const prevBtn =
+                document.querySelector(
+                    ".calendar .calendar-prev a"
+                );
+
+            const nextBtn =
+                document.querySelector(
+                    ".calendar .calendar-next a"
+                );
+
+            const todayDate =
+                document.querySelector(
+                    ".calendar .calendar-today-date"
+                );
+
+            const dateNumber =
+                document.querySelectorAll(
+                    ".calendar .dateNumber"
+                );
+
+
+            prevBtn.addEventListener(
+                "click",
+                function(e) {
+
+                    e.preventDefault();
+
+                    calendarControl
+                        .navigateToPreviousMonth();
+
+                }
+            );
+
+
+            nextBtn.addEventListener(
+                "click",
+                function(e) {
+
+                    e.preventDefault();
+
+                    calendarControl
+                        .navigateToNextMonth();
+
+                }
+            );
+
+
+            todayDate.addEventListener(
+                "click",
+                function() {
+
+                    calendarControl
+                        .navigateToCurrentMonth();
+
+                }
+            );
+
+
+            for (
+                let i = 0;
+                i < dateNumber.length;
+                i++
+            ) {
+
+                dateNumber[i].addEventListener(
+                    "click",
+                    function(e) {
+
+                        e.preventDefault();
+
+                        calendarControl
+                            .selectDate(e);
+
+                    }
+                );
+
+            }
+
+        },
+
+
+        /* Обновление после переключения месяца */
+
+        attachEventsOnNextPrev: function() {
+
+            calendarControl.plotDates();
+
+            calendarControl.attachEvents();
+
+        },
+
+
+        /* Запуск */
+
+        init: function() {
+
+            calendarControl.plotSelectors();
+
+            calendarControl.plotDates();
+
+            calendarControl.attachEvents();
+
+        }
+
+    };
+
+
+    calendarControl.init();
+
+}
+
+
+/* Запускаем календарь */
+
+const calendarControl =
+    new CalendarControl();
+
+</script>
+
+</body>
+</html>
