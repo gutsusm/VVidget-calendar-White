@@ -13,10 +13,10 @@
 
 :root {
     /* ОСНОВНОЙ ФОН */
-    --calendar-bg-color: #FFFFFF;
+    --calendar-bg-color: #191919;
 
     /* Цвет текста */
-    --calendar-font-color: #191919;
+    --calendar-font-color: #FFFFFF;
 
     /* Разделитель дней недели */
     --weekdays-border-bottom-color: #333333;
@@ -67,7 +67,7 @@ body {
     min-width: 0;
     margin: 0;
     padding: 0;
-    background: #FFFFFF;
+    background: #191919;
 }
 
 body {
@@ -141,6 +141,18 @@ body {
     font-weight: 700;
 
     font-size: clamp(15px, 5vw, 20px);
+
+    /* БЕЛЫЙ ЦВЕТ */
+    color: #FFFFFF;
+}
+
+
+/* Разделитель между месяцем и годом */
+
+.calendar .calendar-inner .calendar-controls
+.calendar-year-month > div {
+
+    color: #FFFFFF;
 }
 
 
@@ -174,7 +186,8 @@ body {
 
     border-radius: 6px;
 
-    color: var(--calendar-font-color);
+    /* БЕЛЫЙ ЦВЕТ СТРЕЛОК */
+    color: #FFFFFF;
 
     line-height: 1;
 }
@@ -205,6 +218,9 @@ body {
     font-size: clamp(11px, 3.5vw, 14px);
 
     white-space: nowrap;
+
+    /* БЕЛЫЙ ЦВЕТ TODAY */
+    color: #FFFFFF;
 }
 
 
