@@ -13,28 +13,28 @@
 
 :root {
     /* ОСНОВНОЙ ФОН */
-    --calendar-bg-color: #191919;
+    --calendar-bg-color: #FFFFFF;
 
     /* Цвет текста */
-    --calendar-font-color: #FFFFFF;
+    --calendar-font-color: #191919;
 
     /* Разделитель дней недели */
-    --weekdays-border-bottom-color: #333333;
+    --weekdays-border-bottom-color: #E5E5E5;
 
     /* Наведение на дату */
-    --calendar-date-hover-color: #3A3A3A;
+    --calendar-date-hover-color: #F0F0F0;
 
     /* Фон кнопки Today */
-    --calendar-current-date-color: #242424;
+    --calendar-current-date-color: #F3F3F3;
 
     /* Цвет сегодняшнего дня */
     --calendar-today-color: #2196F3;
 
     /* Обводка сегодняшнего дня */
-    --calendar-today-innerborder-color: #000000;
+    --calendar-today-innerborder-color: #FFFFFF;
 
     /* Фон стрелок */
-    --calendar-nextprev-bg-color: #242424;
+    --calendar-nextprev-bg-color: #F3F3F3;
 
     /*
        ГЛАВНАЯ НАСТРОЙКА РАЗМЕРА
@@ -67,7 +67,7 @@ body {
     min-width: 0;
     margin: 0;
     padding: 0;
-    background: #191919;
+    background: #FFFFFF;
 }
 
 body {
@@ -142,8 +142,7 @@ body {
 
     font-size: clamp(15px, 5vw, 20px);
 
-    /* БЕЛЫЙ ЦВЕТ */
-    color: #FFFFFF;
+    color: #191919;
 }
 
 
@@ -152,11 +151,13 @@ body {
 .calendar .calendar-inner .calendar-controls
 .calendar-year-month > div {
 
-    color: #FFFFFF;
+    color: #191919;
 }
 
 
-/* Стрелки */
+/* =========================================================
+   СТРЕЛКИ
+   ========================================================= */
 
 .calendar .calendar-inner .calendar-controls .calendar-prev {
     text-align: left;
@@ -186,8 +187,7 @@ body {
 
     border-radius: 6px;
 
-    /* БЕЛЫЙ ЦВЕТ СТРЕЛОК */
-    color: #FFFFFF;
+    color: #191919;
 
     line-height: 1;
 }
@@ -219,8 +219,7 @@ body {
 
     white-space: nowrap;
 
-    /* БЕЛЫЙ ЦВЕТ TODAY */
-    color: #FFFFFF;
+    color: #191919;
 }
 
 
@@ -265,6 +264,8 @@ body {
     border-radius: 5px;
 
     font-size: clamp(11px, 3.5vw, 15px);
+
+    color: #191919;
 }
 
 
@@ -288,10 +289,14 @@ div:nth-child(-n+7) {
     margin-bottom: 3px;
 
     font-size: clamp(9px, 3vw, 13px);
+
+    color: #666666;
 }
 
 
-/* Hover */
+/* =========================================================
+   HOVER
+   ========================================================= */
 
 .calendar .calendar-inner .calendar-body
 div:hover {
@@ -299,6 +304,8 @@ div:hover {
     border:
         1px solid
         var(--calendar-date-hover-color);
+
+    background: #F7F7F7;
 }
 
 
@@ -310,6 +317,8 @@ div:nth-child(-n+7):hover {
     border-bottom:
         1px solid
         var(--weekdays-border-bottom-color);
+
+    background: transparent;
 }
 
 
@@ -317,17 +326,21 @@ div:nth-child(-n+7):hover {
 div.empty-dates:hover {
 
     border: 1px solid transparent;
+
+    background: transparent;
 }
 
 
-/* Ссылки с датами */
+/* =========================================================
+   ССЫЛКИ С ДАТАМИ
+   ========================================================= */
 
 .calendar .calendar-inner .calendar-body div > a {
 
     width: 100%;
     height: 100%;
 
-    color: var(--calendar-font-color);
+    color: #191919;
 
     text-decoration: none;
 
@@ -346,6 +359,8 @@ div.empty-dates:hover {
 .calendar-today {
 
     background: var(--calendar-today-color);
+
+    color: #FFFFFF;
 }
 
 
@@ -353,11 +368,15 @@ div.empty-dates:hover {
 .calendar-today:hover {
 
     border: 1px solid transparent;
+
+    background: var(--calendar-today-color);
 }
 
 
 .calendar .calendar-inner .calendar-body
 .calendar-today a {
+
+    color: #FFFFFF;
 
     outline:
         2px solid
